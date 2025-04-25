@@ -2,6 +2,7 @@
 // Created by andre on 26.04.2025.
 //
 #include <string>
+#include <iostream>
 using namespace std;
 #ifndef STRUCTS_FUNCTIONS_H
 #define STRUCTS_FUNCTIONS_H
@@ -13,6 +14,7 @@ struct books_nodes {
     string publisher;
     int pages;
     books_nodes* next;
+
 };
 
 struct Head_node {
@@ -24,6 +26,13 @@ Head_node* creat_list();
 void add_first_book(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
 void add_end(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
 void add_after(Head_node* head,int number, const string& book,const string& author, int year, const string& publisher, int pages);
+
+void print_node(books_nodes* node_for_print);
 void print_list(Head_node* head);
+
+void search_name(Head_node* head, const string& target_name)
+
+void delete_node(Head_node* head, int number);
+
 
 #endif //STRUCTS_FUNCTIONS_H

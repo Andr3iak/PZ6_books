@@ -46,7 +46,6 @@ void add_after(Head_node* head,int number, const string& name,const string& auth
             after_node= after_node->next;
         }
         books_nodes* new_node = new books_nodes{name, author, year, publisher, pages, after_node->next};
-        // new_node->next = after_node->next;
         after_node->next = new_node;
         head->count++;
     }
@@ -54,8 +53,109 @@ void add_after(Head_node* head,int number, const string& name,const string& auth
 
 void print_list(Head_node* head) {
     books_nodes* temp = head->first;
+    int n = 1;
     while (temp != nullptr) {
-        cout << temp->name <<"; "<<temp->author <<"; "<<temp->year <<"; "<<temp->publisher <<"; "<<temp->pages << endl;
+        cout << n << ". " <<temp->name <<"; "<<temp->author <<"; "<<temp->year <<"; "<<temp->publisher <<"; "<<temp->pages <<"."<< endl;
+        temp = temp->next;
+        n++;
+    }
+    cout<<endl;
+}
+
+void delete_node(Head_node* head, int number) {
+    if (head -> count == 0) {
+        cout<< "Ваш список еще пуст. Удалять пока нечего)\n "<< endl;
+        return;
+    }
+    if (number > head->count || number < 1) {
+        cout << "Ошибка: в списке всего " << head->count << " элементов, а введен: " << number << "\n" << endl;
+        return;
+    }
+    books_nodes* to_delete = nullptr;
+    if (number == 1)  {
+        to_delete = head->first;
+        head->first = to_delete->next;
+    }
+    else {
+        books_nodes* temp= head->first;
+        for (int i = 1; i<number-1; i++) {
+            temp = temp->next;
+        }
+        to_delete= temp->next;
+        temp->next = to_delete->next;
+    }
+    cout<<"Элемент под номером: "<<number<< " (" << to_delete->name <<") "<< "успешно удален\n"<< endl;
+    delete to_delete;
+    head->count--;
+}
+
+void print_node(books_nodes* node_for_print) {
+    cout << node_for_print->name <<"; "<<node_for_print->author <<"; "<<node_for_print->year <<"; "<<node_for_print->publisher <<"; "<<node_for_print->pages <<"."<< endl;
+}
+
+void search_name(Head_node* head, const string& target_name) {
+    if (head->count == 0) {
+        cout << "Ваш список пуст. \n\n";
+        return;
+    }
+    books_nodes* temp = head->first;
+    int n = 1;
+    bool found = false;
+    while (temp!=nullptr) {
+        if (temp -> name == target_name) {
+            cout << n <<". ";
+            print_node(temp);
+            found = true;
+        }
+        n++;
         temp = temp->next;
     }
+    if (!found) {
+        cout << "Совпадений не найдено. \n\n";
+    }
 }
+
+void search_author(Head_node* head, const string& target_author) {
+    if (head->count == 0) {
+        cout << "Ваш список пуст. \n\n";
+        return;
+    }
+    books_nodes* temp = head->first;
+    int n = 1;
+    bool found = false;
+    while (temp!=nullptr) {
+        if (temp -> author == target_author) {
+            cout << n <<". ";
+            print_node(temp);
+            found = true;
+        }
+        n++;
+        temp = temp->next;
+    }
+    if (!found) {
+        cout << "Совпадений не найдено. \n\n";
+    }
+}
+
+void search_year(Head_node* head, int target_year) {
+    if (head->count == 0) {
+        cout << "Ваш список пуст. \n\n";
+        return;
+    }
+    books_nodes* temp = head->first;
+    int n = 1;
+    bool found = false;
+    while (temp!=nullptr) {
+        if (temp -> year == target_year) {
+            cout << n <<". ";
+            print_node(temp);
+            found = true;
+        }
+        n++;
+        temp = temp->next;
+    }
+    if (!found) {
+        cout << "Совпадений не найдено. \n\n";
+    }
+}
+
