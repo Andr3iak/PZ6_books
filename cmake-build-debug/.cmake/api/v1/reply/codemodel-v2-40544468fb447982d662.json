@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.31"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "_6____",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "_6____::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-_6____-Debug-93e812733e6a4d8efe42.json",
+					"name" : "_6____",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/andre/Study/AIP/Practice (2 semestr)/Programms/\u041f\u0417-6 (\u0441\u043f\u0438\u0441\u043e\u043a \u043a\u043d\u0438\u0433)/cmake-build-debug",
+		"source" : "C:/Users/andre/Study/AIP/Practice (2 semestr)/Programms/\u041f\u0417-6 (\u0441\u043f\u0438\u0441\u043e\u043a \u043a\u043d\u0438\u0433)"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

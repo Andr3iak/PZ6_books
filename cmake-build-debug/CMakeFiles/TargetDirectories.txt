@@ -1,0 +1,3 @@
+C:/Users/andre/Study/AIP/Practice (2 semestr)/Programms/ПЗ-6 (список книг)/cmake-build-debug/CMakeFiles/_6____.dir
+C:/Users/andre/Study/AIP/Practice (2 semestr)/Programms/ПЗ-6 (список книг)/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/andre/Study/AIP/Practice (2 semestr)/Programms/ПЗ-6 (список книг)/cmake-build-debug/CMakeFiles/rebuild_cache.dir

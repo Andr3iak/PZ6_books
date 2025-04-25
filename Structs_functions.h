@@ -1,0 +1,29 @@
+//
+// Created by andre on 26.04.2025.
+//
+#include <string>
+using namespace std;
+#ifndef STRUCTS_FUNCTIONS_H
+#define STRUCTS_FUNCTIONS_H
+
+struct books_nodes {
+    string name;
+    string author;
+    int year;
+    string publisher;
+    int pages;
+    books_nodes* next;
+};
+
+struct Head_node {
+    int count=0;
+    books_nodes* first=nullptr;
+};
+
+Head_node* creat_list();
+void add_first_book(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
+void add_end(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
+void add_after(Head_node* head,int number, const string& book,const string& author, int year, const string& publisher, int pages);
+void print_list(Head_node* head);
+
+#endif //STRUCTS_FUNCTIONS_H
