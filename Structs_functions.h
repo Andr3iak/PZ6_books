@@ -42,4 +42,7 @@ void clear_all_list(Head_node* head);
 void save_binfile(Head_node* head, const string& file_name);
 void save_string(ofstream& outfile, const string& str);
 
+Head_node* import_bin(const string& file_name);
+string import_string(ifstream& file_name);
+
 #endif //STRUCTS_FUNCTIONS_H

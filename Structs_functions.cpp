@@ -199,3 +199,39 @@ void save_string(ofstream& outfile, const string& str) {
     outfile.write(reinterpret_cast<const char*>(&length), sizeof(size_t));
     outfile.write(str.c_str(), length);
 }
+
+Head_node* import_bin(const string& file_name) {
+    ifstream infile(file_name, ios::binary);
+    if (!infile) {
+        cerr << "Ошибка открытия файла для чтения!\n";
+        return nullptr;
+    }
+    Head_node* head = creat_list();
+
+    int count = 0;
+    infile.read(reinterpret_cast<char*>(&count), sizeof(int));
+
+    for (int i =0; i<count; i++) {
+        string name = import_string(infile);
+        string author = import_string(infile);
+        int year, pages;
+        infile.read(reinterpret_cast<char*>(&year), sizeof(int));
+        string publisher = import_string(infile);
+        infile.read(reinterpret_cast<char*>(&pages), sizeof(int));
+        add_end(head, name, author, year, publisher, pages);
+    }
+    head->count = count;
+    cout << "Успешно импортировано " << count << " книг из файла '" << file_name <<"' \n";
+    return head;
+}
+
+string import_string(ifstream& file_name) {
+    size_t length;
+    file_name.read(reinterpret_cast<char*> (&length), sizeof(size_t));
+
+    string str;
+    str.resize(length);
+    file_name.read(&str[0], length);
+
+    return str;
+}

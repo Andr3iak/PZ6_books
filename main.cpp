@@ -22,6 +22,7 @@ int main() {
         cout << "8. Найти по году издания" << endl;
         cout << "9. Очистить список" << endl;
         cout << "10. Сохранить список в бинарный файл" << endl;
+        cout << "11. Импортировать целый список из бинарного файла" << endl;
         cout << "100. Выйти из программы и удаление списка" << endl;
 
         cin >> choice;
@@ -94,6 +95,17 @@ int main() {
                 cout << "Введите название файла: ";
                 cin >> file_name;
                 save_binfile(head, file_name);
+                break;
+            }
+            case 11: {
+                string file_name;
+                cout << "Введите название файла со списком для импорта: ";
+                cin >> file_name;
+                Head_node* new_head = import_bin(file_name);
+                if (new_head) {
+                    clear_all_list(head);
+                    head = new_head;
+                }
                 break;
             }
 
