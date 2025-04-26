@@ -49,7 +49,7 @@ void add_after(Head_node* head,int number, const string& name,const string& auth
 }
 
 void print_node(books_nodes* node_for_print) {
-    cout << node_for_print->name <<"; "<<node_for_print->author <<"; "<<node_for_print->year <<"; "<<node_for_print->publisher <<"; "<<node_for_print->pages <<"."<< endl;
+    cout << node_for_print->name <<"; "<<node_for_print->author <<"; "<<node_for_print->year <<"; "<<node_for_print->publisher <<"; "<<node_for_print->pages <<".\n"<< endl;
 }
 
 void print_list(Head_node* head) {
@@ -234,4 +234,39 @@ string import_string(ifstream& file_name) {
     file_name.read(&str[0], length);
 
     return str;
+}
+
+void add_from_bin(Head_node* head, const string& file_name) {
+    ifstream infile(file_name, ios::binary);
+    if (!infile) {
+        cerr << "Ошибка открытия файла для чтения!\n";
+        return;
+    }
+
+    int count = 0, cnt=0;
+    infile.read(reinterpret_cast<char*>(&count), sizeof(int));
+
+    books_nodes* temp = head->first;
+    for (int i =0; i<count; i++) {
+        bool found = false;
+        string name = import_string(infile);
+        string author = import_string(infile);
+        int year, pages;
+        infile.read(reinterpret_cast<char*>(&year), sizeof(int));
+        string publisher = import_string(infile);
+        infile.read(reinterpret_cast<char*>(&pages), sizeof(int));
+        while (temp!=nullptr) {
+            if (temp->name == name && temp->author == author && temp->year == year && temp->publisher == publisher && temp->pages == pages) {
+                found = true;
+            }
+            temp = temp->next;
+        }
+        if (!found) {
+            add_end(head, name, author, year, publisher, pages);
+            head->count++;
+            cnt++;
+        }
+        temp = head -> first;
+    }
+    cout <<"Книги успешно добавлены в количестве "<<cnt<<" штук.\n";
 }

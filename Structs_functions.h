@@ -44,5 +44,6 @@ void save_string(ofstream& outfile, const string& str);
 
 Head_node* import_bin(const string& file_name);
 string import_string(ifstream& file_name);
+void add_from_bin(Head_node* head, const string& file_name);
 
 #endif //STRUCTS_FUNCTIONS_H
