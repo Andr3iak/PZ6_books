@@ -3,8 +3,6 @@
 
 using namespace std;
 
-
-
 Head_node* creat_list() {
     Head_node* head = new Head_node;
     head -> first = nullptr;
