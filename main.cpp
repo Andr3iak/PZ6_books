@@ -105,6 +105,7 @@ int main() {
                 Head_node* new_head = import_bin(file_name);
                 if (new_head) {
                     clear_all_list(head);
+                    delete head;
                     head = new_head;
                 }
                 break;

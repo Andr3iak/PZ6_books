@@ -220,7 +220,7 @@ Head_node* import_bin(const string& file_name) {
         infile.read(reinterpret_cast<char*>(&pages), sizeof(int));
         add_end(head, name, author, year, publisher, pages);
     }
-    head->count = count;
+
     cout << "Успешно импортировано " << count << " книг из файла '" << file_name <<"' \n";
     return head;
 }
@@ -263,7 +263,6 @@ void add_from_bin(Head_node* head, const string& file_name) {
         }
         if (!found) {
             add_end(head, name, author, year, publisher, pages);
-            head->count++;
             cnt++;
         }
         temp = head -> first;
