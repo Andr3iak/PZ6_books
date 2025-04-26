@@ -49,6 +49,10 @@ void add_after(Head_node* head,int number, const string& name,const string& auth
     }
 }
 
+void print_node(books_nodes* node_for_print) {
+    cout << node_for_print->name <<"; "<<node_for_print->author <<"; "<<node_for_print->year <<"; "<<node_for_print->publisher <<"; "<<node_for_print->pages <<"."<< endl;
+}
+
 void print_list(Head_node* head) {
     books_nodes* temp = head->first;
     int n = 1;
@@ -87,9 +91,6 @@ void delete_node(Head_node* head, int number) {
     head->count--;
 }
 
-void print_node(books_nodes* node_for_print) {
-    cout << node_for_print->name <<"; "<<node_for_print->author <<"; "<<node_for_print->year <<"; "<<node_for_print->publisher <<"; "<<node_for_print->pages <<"."<< endl;
-}
 
 void search_name(Head_node* head, const string& target_name) {
     if (head->count == 0) {

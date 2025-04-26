@@ -30,7 +30,10 @@ void add_after(Head_node* head,int number, const string& book,const string& auth
 void print_node(books_nodes* node_for_print);
 void print_list(Head_node* head);
 
-void search_name(Head_node* head, const string& target_name)
+void search_name(Head_node* head, const string& target_name);
+void search_author(Head_node* head, const string& target_author);
+void search_year(Head_node* head, int target_year);
+
 
 void delete_node(Head_node* head, int number);
 
