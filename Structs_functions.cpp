@@ -1,5 +1,4 @@
 #include "Structs_functions.h"
-#include <iostream>
 
 using namespace std;
 
@@ -167,5 +166,36 @@ void clear_all_list(Head_node* head) {
     }
     head->first = nullptr;
     head->count = 0;
-    delete head;
+    cout << "Ваш список успешно очищен" << endl;
+}
+
+void save_binfile(Head_node* head, const string& file_name) {
+    if (head -> first ==nullptr || head->count ==0) {
+        cout << "Ваш список пуст, сохранять нечего. \n";
+        return;
+    }
+    ofstream outfile(file_name, ios::binary);
+    if (!outfile) {
+        cout<<"Ошибка открытия фойла\n";
+        return;
+    }
+    outfile.write(reinterpret_cast<const char*>(&head->count), sizeof(int));
+
+    books_nodes* temp = head->first;
+    while (temp!=nullptr) {
+        save_string(outfile, temp->name);
+        save_string(outfile, temp->author);
+        outfile.write(reinterpret_cast<const char*> (&temp->year), sizeof(int));
+        save_string(outfile, temp->publisher);
+        outfile.write(reinterpret_cast<const char*>(&temp->pages), sizeof(int));
+        temp = temp->next;
+    }
+    outfile.close();
+    cout << "Список успешно сохранен в файл '" <<file_name <<"' \n";
+}
+
+void save_string(ofstream& outfile, const string& str) {
+    size_t length  = str.size();
+    outfile.write(reinterpret_cast<const char*>(&length), sizeof(size_t));
+    outfile.write(str.c_str(), length);
 }

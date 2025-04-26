@@ -8,14 +8,6 @@ int main() {
     SetConsoleCP(65001);    // UTF-8
 
     Head_node* head = creat_list();
-    // add_end(head, "RED DEAD REDEMPTION", "Akimov", 2025, "AFK", 31);
-    // add_end(head, "agsaaac", "Andrey", 2015, "School", 3);
-    // add_end(head, "POKERclub", "Andrey", 2010, "LOgotip102", 51);
-    // add_after(head, 2,"пробник по русскому", "Andrey", 2010, "AKMF", 51);
-    // print_list(head);
-    //
-    // delete_node(head, 2);
-    // print_list(head);
 
     int choice=0;
     while (choice != 100) {
@@ -28,6 +20,8 @@ int main() {
         cout << "6. Найти по названию" << endl;
         cout << "7. Найти по автору" << endl;
         cout << "8. Найти по году издания" << endl;
+        cout << "9. Очистить список" << endl;
+        cout << "10. Сохранить список в бинарный файл" << endl;
         cout << "100. Выйти из программы и удаление списка" << endl;
 
         cin >> choice;
@@ -91,16 +85,25 @@ int main() {
                 search_year(head, year);
                 break;
             }
-            case 100: {
-                cout << "Выход из программы.\n";
+            case 9: {
                 clear_all_list(head);
                 break;
             }
+            case 10: {
+                string file_name;
+                cout << "Введите название файла: ";
+                cin >> file_name;
+                save_binfile(head, file_name);
+                break;
+            }
+
+            case 100: {
+                cout << "Выход из программы.\n";
+                clear_all_list(head);
+                delete head;
+                break;
+            }
         }
-
     }
-    // int a;
-    // cout << "Введите : ";
-
     return 0;
 }

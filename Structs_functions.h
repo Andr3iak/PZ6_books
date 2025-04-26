@@ -1,6 +1,7 @@
 //
 // Created by andre on 26.04.2025.
 //
+#include <fstream>
 #include <string>
 #include <iostream>
 using namespace std;
@@ -37,5 +38,8 @@ void search_year(Head_node* head, int target_year);
 
 void delete_node(Head_node* head, int number);
 void clear_all_list(Head_node* head);
+
+void save_binfile(Head_node* head, const string& file_name);
+void save_string(ofstream& outfile, const string& str);
 
 #endif //STRUCTS_FUNCTIONS_H
