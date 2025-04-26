@@ -18,8 +18,17 @@ int main() {
     // print_list(head);
 
     int choice=0;
-    while (choice != 10) {
-        cout << "Выберите действие:\n1. Добавление элемента в начало\n2. Добавление элемента в конец\n3. Добавление после заданного элемента (по его номеру)\n4. Удаление элемента (по номеру)\n5. Вывести весь список\n6. Найти по названию\n7. Найти по автору\n8. Найти по году издания.\n100. Выйти из программы\n" << endl;
+    while (choice != 100) {
+        cout << "Выберите действие:" << endl;
+        cout << "1. Добавление элемента в начало" << endl;
+        cout << "2. Добавление элемента в конец" << endl;
+        cout << "3. Добавление после заданного элемента (по его номеру)" << endl;
+        cout << "4. Удаление элемента (по номеру)" << endl;
+        cout << "5. Вывести весь список" << endl;
+        cout << "6. Найти по названию" << endl;
+        cout << "7. Найти по автору" << endl;
+        cout << "8. Найти по году издания" << endl;
+        cout << "100. Выйти из программы и удаление списка" << endl;
 
         cin >> choice;
 
@@ -27,49 +36,25 @@ int main() {
             case 1: {
                 string name, author, publisher;
                 int year, pages;
-                cout << "Введите название: ";
-                cin >> name;
-                cout << "Введите Автора: ";
-                cin >> author;
-                cout << "Введите год издания: ";
-                cin >> year;
-                cout << "Введите издание: ";
-                cin >> publisher;
-                cout << "Введите количесвто страниц: ";
-                cin >> pages;
+                cout << "|Название << Автор << Year << Publisher << Pages|\n";
+                cin >> name >> author >> year >> publisher >> pages;
                 add_first_book(head, name, author, year, publisher, pages);
                 break;
             }
             case 2: {
                 string name, author, publisher;
                 int year, pages;
-                cout << "Введите название: ";
-                getline(cin, name);
-                cout << "Введите Автора: ";
-                cin >> author;
-                cout << "Введите год издания: ";
-                cin >> year;
-                cout << "Введите издание: ";
-                cin >> publisher;
-                cout << "Введите количесвто страниц: ";
-                cin >> pages;
+                cout << "|Название << Автор << Year << Publisher << Pages|\n";
+                cin >> name >> author >> year >> publisher >> pages;
                 add_end(head, name, author, year, publisher, pages);
                 break;
             }
             case 3: {
                 string name, author, publisher;
                 int year, pages, number;
-                cout << "Введите название: ";
-                cin >> name;
-                cout << "Введите Автора: ";
-                cin >> author;
-                cout << "Введите год издания: ";
-                cin >> year;
-                cout << "Введите издание: ";
-                cin >> publisher;
-                cout << "Введите количесвто страниц: ";
-                cin >> pages;
-                cout << "Добавление после элемнта под номером: ";
+                cout << "|Название << Автор << Year << Publisher << Pages|\n";
+                cin >> name >> author >> year >> publisher >> pages;
+                cout << "Добавление после элемента под номером: ";
                 cin >> number;
                 add_after(head, number, name, author, year, publisher, pages);
                 break;
@@ -83,6 +68,33 @@ int main() {
             }
             case 5: {
                 print_list(head);
+                break;
+            }
+            case 6: {
+                string name;
+                cout << "Введите название искомой книги: ";
+                cin >> name;
+                search_name(head, name);
+                break;
+            }
+            case 7: {
+                string author;
+                cout << "Введите имя автора книги: ";
+                cin >> author;
+                search_author(head, author);
+                break;
+            }
+            case 8: {
+                int year;
+                cout << "Введите год написания книги: ";
+                cin >> year;
+                search_year(head, year);
+                break;
+            }
+            case 100: {
+                cout << "Выход из программы.\n";
+                clear_all_list(head);
+                break;
             }
         }
 

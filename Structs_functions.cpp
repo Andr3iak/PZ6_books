@@ -158,3 +158,14 @@ void search_year(Head_node* head, int target_year) {
     }
 }
 
+void clear_all_list(Head_node* head) {
+    books_nodes* temp = head->first;
+    while (temp!=nullptr) {
+        books_nodes* temp2 = temp->next;
+        delete temp;
+        temp = temp2;
+    }
+    head->first = nullptr;
+    head->count = 0;
+    delete head;
+}

@@ -36,6 +36,6 @@ void search_year(Head_node* head, int target_year);
 
 
 void delete_node(Head_node* head, int number);
-
+void clear_all_list(Head_node* head);
 
 #endif //STRUCTS_FUNCTIONS_H
