@@ -291,26 +291,32 @@ books_nodes* merge(books_nodes* a, books_nodes* b) {
     if (!a) {return b;}
     if (!b) {return a;}
 
+
     if (a->name < b->name) {
         a->next = merge(a->next, b);
         return a;
-    }
-    else {
-        b->next = merge(a, b->next);
+        }
+    else {b->next = merge(a, b->next);
         return b;
     }
 }
 
-void marge_sort(Head_node* head) {
+void merge_sort(Head_node* head, bool top_level) {
     if (!head || !head->first || !head->first->next) {
         return;
     }
+
     books_nodes* second = split_list(head->first);
-    Head_node temp_head1{0, head->first};
-    Head_node temp_head2{0, second};
+    Head_node temp_head1{head->count/2, head->first};
+    Head_node temp_head2{head->count - head->count/2, second};
 
-    marge_sort(&temp_head1);
-    marge_sort(&temp_head2);
+    merge_sort(&temp_head1, false);
+    merge_sort(&temp_head2, false);
 
-    head->first = merge(temp_head1->first, temp_head2->first);
+    head->first = merge(temp_head1.first, temp_head2.first);
+
+    if (top_level) {
+        print_list(head);
+    }
 }
+

@@ -24,6 +24,9 @@ int main() {
         cout << "10. Сохранить список в бинарный файл" << endl;
         cout << "11. Импортировать целый список из бинарного файла (Старый список удаляется)" << endl;
         cout << "12. Импортировать дополнительные книги из файла (Новые книги добавляются к старым)" << endl;
+        cout << "13. Отсортировать список по названиям"<< endl;
+        cout << "14. Отсортировать список по авторам"<< endl;
+        cout << "15. Отсортировать список по годам"<< endl;
         cout << "100. Выйти из программы и удаление списка" << endl;
 
         cin >> choice;
@@ -116,6 +119,19 @@ int main() {
                 cin >> file_name;
                 add_from_bin(head, file_name);
                 break;
+            }
+            case 13: {
+                merge_sort(head, true);
+                break;
+            }
+            // case 14: {
+            //     merge_sort(head, "author");
+            // }
+            // case 15: {
+            //     merge_sort(head, "year");
+            // }
+            case 99: {
+                cout << head->count<<endl;
             }
             case 100: {
                 cout << "Выход из программы.\n";
