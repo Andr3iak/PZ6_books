@@ -46,4 +46,8 @@ Head_node* import_bin(const string& file_name);
 string import_string(ifstream& file_name);
 void add_from_bin(Head_node* head, const string& file_name);
 
+books_nodes* split_list(books_nodes* head);
+void merge(Head_node* a, Head_node* b);
+void marge_sort(Head_node* head);
+
 #endif //STRUCTS_FUNCTIONS_H

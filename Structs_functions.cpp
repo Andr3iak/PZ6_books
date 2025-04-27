@@ -269,3 +269,48 @@ void add_from_bin(Head_node* head, const string& file_name) {
     }
     cout <<"Книги успешно добавлены в количестве "<<cnt<<" штук.\n";
 }
+
+books_nodes* split_list(books_nodes* head) {  //Отделение середины
+    books_nodes* fast = head;
+    books_nodes* slow = head;
+    books_nodes* prev = nullptr;
+
+    while (fast!=nullptr && fast->next!=nullptr) {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    if (prev!=nullptr) {
+        prev->next = nullptr;
+    }
+    return slow;
+}
+
+books_nodes* merge(books_nodes* a, books_nodes* b) {
+    if (!a) {return b;}
+    if (!b) {return a;}
+
+    if (a->name < b->name) {
+        a->next = merge(a->next, b);
+        return a;
+    }
+    else {
+        b->next = merge(a, b->next);
+        return b;
+    }
+}
+
+void marge_sort(Head_node* head) {
+    if (!head || !head->first || !head->first->next) {
+        return;
+    }
+    books_nodes* second = split_list(head->first);
+    Head_node temp_head1{0, head->first};
+    Head_node temp_head2{0, second};
+
+    marge_sort(&temp_head1);
+    marge_sort(&temp_head2);
+
+    head->first = merge(temp_head1->first, temp_head2->first);
+}
