@@ -1,6 +1,6 @@
 #include "Structs_functions.h"
 
-using namespace std;
+// using namespace std;
 
 Head_node* creat_list() {
     Head_node* head = new Head_node;
@@ -166,157 +166,268 @@ void clear_all_list(Head_node* head) {
     }
     head->first = nullptr;
     head->count = 0;
-    cout << "Ваш список успешно очищен" << endl;
+    // cout << "Ваш список успешно очищен" << endl;
 }
 
-void save_binfile(Head_node* head, const string& file_name) {
-    if (head -> first ==nullptr || head->count ==0) {
-        cout << "Ваш список пуст, сохранять нечего. \n";
+books_nodes_convert convert_in_new_struct(books_nodes * old_node) {
+    books_nodes_convert convert_node {};
+
+    strncpy(convert_node.name, old_node->name.c_str(), sizeof(convert_node.name)-1);
+    strncpy(convert_node.author, old_node->author.c_str(), sizeof(convert_node.author)-1);
+    strncpy(convert_node.publisher, old_node->publisher.c_str(), sizeof(convert_node.publisher) - 1);
+
+    convert_node.year = old_node->year;
+    convert_node.pages = old_node->pages;
+
+    return convert_node;
+}
+
+void save_binfile(Head_node *head, const string &file_name) {
+    if (head->first == nullptr || head->count == 0) {
+        cout << "Ваш список пуст" << endl;
         return;
     }
     ofstream outfile(file_name, ios::binary);
+
     if (!outfile) {
-        cout<<"Ошибка открытия фойла\n";
-        return;
+        cout << "Ошибка открытия файла для сохранения."<< endl;
     }
+
     outfile.write(reinterpret_cast<const char*>(&head->count), sizeof(int));
 
     books_nodes* temp = head->first;
+
     while (temp!=nullptr) {
-        save_string(outfile, temp->name);
-        save_string(outfile, temp->author);
-        outfile.write(reinterpret_cast<const char*> (&temp->year), sizeof(int));
-        save_string(outfile, temp->publisher);
-        outfile.write(reinterpret_cast<const char*>(&temp->pages), sizeof(int));
+        books_nodes_convert convert_node = convert_in_new_struct(temp);
+        outfile.write(reinterpret_cast<const char*>(&convert_node), sizeof(convert_node));
         temp = temp->next;
     }
     outfile.close();
-    cout << "Список успешно сохранен в файл '" <<file_name <<"' \n";
 }
 
-void save_string(ofstream& outfile, const string& str) {
-    size_t length  = str.size();
-    outfile.write(reinterpret_cast<const char*>(&length), sizeof(size_t));
-    outfile.write(str.c_str(), length);
+books_nodes* return_convert(books_nodes_convert convert_node) {
+    books_nodes* default_node = new books_nodes();
+
+    default_node->name = convert_node.name;
+    default_node->year = convert_node.year;
+    default_node->author = convert_node.author;
+    default_node->pages = convert_node.pages;
+    default_node->publisher = convert_node.publisher;
+    default_node->next = nullptr;
+
+    return default_node;
 }
 
-Head_node* import_bin(const string& file_name) {
+void import_bin(Head_node* head, const string &file_name) {
     ifstream infile(file_name, ios::binary);
     if (!infile) {
-        cerr << "Ошибка открытия файла для чтения!\n";
-        return nullptr;
-    }
-    Head_node* head = creat_list();
-
-    int count = 0;
-    infile.read(reinterpret_cast<char*>(&count), sizeof(int));
-
-    for (int i =0; i<count; i++) {
-        string name = import_string(infile);
-        string author = import_string(infile);
-        int year, pages;
-        infile.read(reinterpret_cast<char*>(&year), sizeof(int));
-        string publisher = import_string(infile);
-        infile.read(reinterpret_cast<char*>(&pages), sizeof(int));
-        add_end(head, name, author, year, publisher, pages);
-    }
-
-    cout << "Успешно импортировано " << count << " книг из файла '" << file_name <<"' \n";
-    return head;
-}
-
-string import_string(ifstream& file_name) {
-    size_t length;
-    file_name.read(reinterpret_cast<char*> (&length), sizeof(size_t));
-
-    string str;
-    str.resize(length);
-    file_name.read(&str[0], length);
-
-    return str;
-}
-
-void add_from_bin(Head_node* head, const string& file_name) {
-    ifstream infile(file_name, ios::binary);
-    if (!infile) {
-        cerr << "Ошибка открытия файла для чтения!\n";
+        cout << "Ошибка открытия файла для чтения\n";
         return;
     }
-
-    int count = 0, cnt=0;
+    int count;
     infile.read(reinterpret_cast<char*>(&count), sizeof(int));
 
-    books_nodes* temp = head->first;
-    for (int i =0; i<count; i++) {
-        bool found = false;
-        string name = import_string(infile);
-        string author = import_string(infile);
-        int year, pages;
-        infile.read(reinterpret_cast<char*>(&year), sizeof(int));
-        string publisher = import_string(infile);
-        infile.read(reinterpret_cast<char*>(&pages), sizeof(int));
-        while (temp!=nullptr) {
-            if (temp->name == name && temp->author == author && temp->year == year && temp->publisher == publisher && temp->pages == pages) {
-                found = true;
+    clear_all_list(head);
+
+    head->count = 0;
+    head->first = nullptr;
+
+    books_nodes* last = nullptr;
+    for (int i = 0; i < count; ++i) {
+            books_nodes_convert convert_node;
+            infile.read(reinterpret_cast<char*>(&convert_node), sizeof(convert_node));
+            books_nodes * node = return_convert(convert_node);
+            if (head->first == nullptr) {
+                head->first = node;
+            } else {
+                last->next = node;
             }
-            temp = temp->next;
+            last = node;
+            head->count++;
         }
-        if (!found) {
-            add_end(head, name, author, year, publisher, pages);
-            cnt++;
-        }
-        temp = head -> first;
     }
-    cout <<"Книги успешно добавлены в количестве "<<cnt<<" штук.\n";
+
+void add_books_from_binfile(Head_node* head, const string& file_name) {
+        ifstream infile(file_name, ios::binary);
+        if (!infile) {
+            cout << "Ошибка открытия файла для импорта\n";
+            return;
+        }
+
+        int new_count = 0;
+        infile.read(reinterpret_cast<char*>(&new_count), sizeof(int));
+        if (new_count <= 0) {
+            cout << "Файл не содержит книг для импорта.\n";
+            return;
+        }
+
+        books_nodes* last = head->first;
+        if (last != nullptr) {
+            while (last->next != nullptr) {
+                last = last->next;
+            }
+        }
+        bool found = false;
+        for (int i = 0; i < new_count; ++i) {
+            books_nodes_convert convert_node;
+            infile.read(reinterpret_cast<char*>(&convert_node), sizeof(convert_node));
+
+            books_nodes* new_node = return_convert(convert_node);
+            books_nodes* temp = head->first;
+
+            while (temp != nullptr) {
+                if (temp->name == new_node->name || temp->author == new_node->author || temp->publisher == new_node->publisher || temp->year == new_node->year || temp->pages == new_node->pages) {
+                    found = true;
+                    break;
+                }
+                temp = temp->next;
+            }
+            if (!found) {
+                if (head->first == nullptr) {
+                    head->first = new_node;
+                    last = new_node;
+                } else {
+                    last->next = new_node;
+                    last = new_node;
+                }
+                head->count++;
+                }
+            else {
+                delete new_node;
+            }
+        }
+        infile.close();
+        cout << "Импортировано " << new_count << " книг из файла '" << file_name << "'\n";
 }
 
-books_nodes* split_list(books_nodes* head) {  //Отделение середины
-    books_nodes* fast = head;
-    books_nodes* slow = head;
-    books_nodes* prev = nullptr;
-
-    while (fast!=nullptr && fast->next!=nullptr) {
-        prev = slow;
-        slow = slow->next;
-        fast = fast->next->next;
-    }
-
-    if (prev!=nullptr) {
-        prev->next = nullptr;
-    }
-    return slow;
-}
-
-books_nodes* merge(books_nodes* a, books_nodes* b) {
-    if (!a) {return b;}
-    if (!b) {return a;}
-
-
-    if (a->name < b->name) {
-        a->next = merge(a->next, b);
-        return a;
-        }
-    else {b->next = merge(a, b->next);
-        return b;
-    }
-}
-
-void merge_sort(Head_node* head, bool top_level) {
-    if (!head || !head->first || !head->first->next) {
+void sort_names(Head_node* head) {
+    if (head->first == nullptr || head->first->next == nullptr) {
         return;
     }
 
-    books_nodes* second = split_list(head->first);
-    Head_node temp_head1{head->count/2, head->first};
-    Head_node temp_head2{head->count - head->count/2, second};
+    bool swapped;
+    books_nodes* a;
+    books_nodes* b = nullptr;
 
-    merge_sort(&temp_head1, false);
-    merge_sort(&temp_head2, false);
+    do {
+        swapped = false;
+        a = head->first;
 
-    head->first = merge(temp_head1.first, temp_head2.first);
+        while (a->next != b) {
+            if (a->name > a->next->name) {
 
-    if (top_level) {
-        print_list(head);
-    }
+                string temp_name = a->name;
+                a->name = a->next->name;
+                a->next->name = temp_name;
+
+                string temp_author = a->author;
+                a->author = a->next->author;
+                a->next->author = temp_author;
+
+                string temp_publisher = a->publisher;
+                a->publisher = a->next->publisher;
+                a->next->publisher = temp_publisher;
+
+                int temp_year = a->year;
+                a->year = a->next->year;
+                a->next->year = temp_year;
+
+                int temp_pages = a->pages;
+                a->pages = a->next->pages;
+                a->next->pages = temp_pages;
+
+                swapped = true;
+            }
+            a = a->next;
+        }
+        b = a;
+    } while (swapped);
 }
 
+void sort_author(Head_node* head) {
+    if (head->first == nullptr || head->first->next == nullptr) {
+        return;
+    }
+
+    bool swapped;
+    books_nodes* a;
+    books_nodes* b = nullptr;
+
+    do {
+        swapped = false;
+        a = head->first;
+
+        while (a->next != b) {
+            if (a->author > a->next->author) {
+
+                string temp_name = a->name;
+                a->name = a->next->name;
+                a->next->name = temp_name;
+
+                string temp_author = a->author;
+                a->author = a->next->author;
+                a->next->author = temp_author;
+
+                string temp_publisher = a->publisher;
+                a->publisher = a->next->publisher;
+                a->next->publisher = temp_publisher;
+
+                int temp_year = a->year;
+                a->year = a->next->year;
+                a->next->year = temp_year;
+
+                int temp_pages = a->pages;
+                a->pages = a->next->pages;
+                a->next->pages = temp_pages;
+
+                swapped = true;
+            }
+            a = a->next;
+        }
+        b = a;
+    } while (swapped);
+}
+
+void sort_year(Head_node* head) {
+    if (head->first == nullptr || head->first->next == nullptr) {
+        return;
+    }
+
+    bool swapped;
+    books_nodes* a;
+    books_nodes* b = nullptr;
+
+    do {
+        swapped = false;
+        a = head->first;
+
+        while (a->next != b) {
+            if (a->year > a->next->year) {
+
+                string temp_name = a->name;
+                a->name = a->next->name;
+                a->next->name = temp_name;
+
+                string temp_author = a->author;
+                a->author = a->next->author;
+                a->next->author = temp_author;
+
+                string temp_publisher = a->publisher;
+                a->publisher = a->next->publisher;
+                a->next->publisher = temp_publisher;
+
+                int temp_year = a->year;
+                a->year = a->next->year;
+                a->next->year = temp_year;
+
+                int temp_pages = a->pages;
+                a->pages = a->next->pages;
+                a->next->pages = temp_pages;
+
+                swapped = true;
+            }
+            a = a->next;
+        }
+        b = a;
+    } while (swapped);
+}

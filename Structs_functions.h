@@ -1,9 +1,11 @@
 //
 // Created by andre on 26.04.2025.
 //
+#include <iostream>
 #include <fstream>
 #include <string>
-#include <iostream>
+#include <cstring>
+
 using namespace std;
 #ifndef STRUCTS_FUNCTIONS_H
 #define STRUCTS_FUNCTIONS_H
@@ -23,6 +25,14 @@ struct Head_node {
     books_nodes* first=nullptr;
 };
 
+struct books_nodes_convert {
+    char name[100];
+    char author[100];
+    int year;
+    char publisher[100];
+    int pages;
+};
+
 Head_node* creat_list();
 void add_first_book(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
 void add_end(Head_node* head, const string& book,const string& author, int year,const string& publisher, int pages);
@@ -39,16 +49,13 @@ void search_year(Head_node* head, int target_year);
 void delete_node(Head_node* head, int number);
 void clear_all_list(Head_node* head);
 
-void save_binfile(Head_node* head, const string& file_name);
-void save_string(ofstream& outfile, const string& str);
+void save_binfile(Head_node *head, const string &file_name);
+void import_bin(Head_node* head, const string &file_name);
+void add_books_from_binfile(Head_node* head, const string& file_name);
 
-Head_node* import_bin(const string& file_name);
-string import_string(ifstream& file_name);
-void add_from_bin(Head_node* head, const string& file_name);
-
-books_nodes* split_list(books_nodes* head);
-books_nodes* merge(books_nodes* a, books_nodes* b);
-void merge_sort(Head_node* head, bool top_level);
+void sort_names(Head_node* head);
+void sort_author(Head_node* head);
+void sort_year(Head_node* head);
 
 
 #endif //STRUCTS_FUNCTIONS_H

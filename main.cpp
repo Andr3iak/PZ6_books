@@ -4,29 +4,30 @@
 using namespace std;
 
 int main() {
-    SetConsoleOutputCP(65001);  // UTF-8
-    SetConsoleCP(65001);    // UTF-8
+    SetConsoleOutputCP(65001);
+    SetConsoleCP(65001);
 
     Head_node* head = creat_list();
 
     int choice=0;
     while (choice != 100) {
-        cout << "Выберите действие:" << endl;
+        cout << "\nВыберите действие:" << endl;
         cout << "1. Добавление элемента в начало" << endl;
         cout << "2. Добавление элемента в конец" << endl;
         cout << "3. Добавление после заданного элемента (по его номеру)" << endl;
         cout << "4. Удаление элемента (по номеру)" << endl;
         cout << "5. Вывести весь список" << endl;
-        cout << "6. Найти по названию" << endl;
-        cout << "7. Найти по автору" << endl;
-        cout << "8. Найти по году издания" << endl;
-        cout << "9. Очистить список" << endl;
-        cout << "10. Сохранить список в бинарный файл" << endl;
-        cout << "11. Импортировать целый список из бинарного файла (Старый список удаляется)" << endl;
-        cout << "12. Импортировать дополнительные книги из файла (Новые книги добавляются к старым)" << endl;
-        cout << "13. Отсортировать список по названиям"<< endl;
-        cout << "14. Отсортировать список по авторам"<< endl;
-        cout << "15. Отсортировать список по годам"<< endl;
+        cout << "6. Вывести количество элементов"<< endl;
+        cout << "7. Найти по названию" << endl;
+        cout << "8. Найти по автору" << endl;
+        cout << "9. Найти по году издания" << endl;
+        cout << "10. Очистить список" << endl;
+        cout << "11. Сохранить список в бинарный файл" << endl;
+        cout << "12. Импортировать целый список из бинарного файла (Старый список удаляется)" << endl;
+        cout << "13. Импортировать дополнительные книги из файла (Новые книги добавляются к старым)" << endl;
+        cout << "14. Отсортировать список по названиям"<< endl;
+        cout << "15. Отсортировать список по авторам"<< endl;
+        cout << "16. Отсортировать список по годам"<< endl;
         cout << "100. Выйти из программы и удаление списка" << endl;
 
         cin >> choice;
@@ -70,69 +71,72 @@ int main() {
                 break;
             }
             case 6: {
+                cout << head->count<<endl;
+            }
+            case 7: {
                 string name;
                 cout << "Введите название искомой книги: ";
                 cin >> name;
                 search_name(head, name);
                 break;
             }
-            case 7: {
+            case 8: {
                 string author;
                 cout << "Введите имя автора книги: ";
                 cin >> author;
                 search_author(head, author);
                 break;
             }
-            case 8: {
+            case 9: {
                 int year;
                 cout << "Введите год написания книги: ";
                 cin >> year;
                 search_year(head, year);
                 break;
             }
-            case 9: {
-                clear_all_list(head);
-                break;
-            }
             case 10: {
-                string file_name;
-                cout << "Введите название файла: ";
-                cin >> file_name;
-                save_binfile(head, file_name);
+                clear_all_list(head);
+                cout << "Список очищен."<< endl;
                 break;
             }
             case 11: {
                 string file_name;
-                cout << "Введите название файла со списком для импорта: ";
+                cout << "Введите название файла: ";
                 cin >> file_name;
-                Head_node* new_head = import_bin(file_name);
-                if (new_head) {
-                    clear_all_list(head);
-                    delete head;
-                    head = new_head;
-                }
+                save_binfile(head, file_name);
+                cout << "Сохранено" << endl;
                 break;
             }
             case 12: {
                 string file_name;
                 cout << "Введите название файла со списком для импорта: ";
                 cin >> file_name;
-                add_from_bin(head, file_name);
+                import_bin(head,file_name);
+                cout << "Список импортирован" << endl;
                 break;
             }
             case 13: {
-                merge_sort(head, true);
+                string file_name;
+                cout << "Введите название файла со списком для импорта: ";
+                cin >> file_name;
+                add_books_from_binfile(head, file_name);
+                cout << "Книги импортированы" << endl;
                 break;
             }
-            // case 14: {
-            //     merge_sort(head, "author");
-            // }
-            // case 15: {
-            //     merge_sort(head, "year");
-            // }
-            case 99: {
-                cout << head->count<<endl;
+            case 14: {
+                sort_names(head);
+                cout << "Список отсортирован по именам."<< endl;
+                break;
             }
+            case 15: {
+                sort_author(head);
+                break;
+            }
+            case 16: {
+                sort_year(head);
+                break;
+            }
+
             case 100: {
                 cout << "Выход из программы.\n";
                 clear_all_list(head);
